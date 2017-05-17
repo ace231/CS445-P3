@@ -6,12 +6,10 @@
  * date last modified: 5/8/2017
  * purpose: controller for first person camera. handles
  *          changes coming from user and renders view
- test
+ * test
  **************************************************/
 package cs445.project3;
 
-import java.nio.FloatBuffer;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -30,7 +28,6 @@ public class FPCameraController {
     private float yaw = 0.0f;
     private float pitch = 0.0f;
     private Vector3Float me;
-
 
     /**
      *
@@ -136,11 +133,11 @@ public class FPCameraController {
      */
     public void gameLoop() {
         FPCameraController camera = new FPCameraController(0, 0, 0);
-        createBlock(0, 0, -10);
+        Chunk chunk = new Chunk(0, 0, -10);
         float dx = 0.0f, dy = 0.0f, dz = 0.0f, lastTime = 0.0f;
         long time = 0;
         float mouseSensitivity = 0.09f, movementSpeed = 0.35f;
-        Mouse.setGrabbed(false);    //true means mouse is paralyzed
+        Mouse.setGrabbed(true);    //true means mouse is paralyzed
 
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             time = Sys.getTime();
@@ -172,91 +169,11 @@ public class FPCameraController {
             glLoadIdentity();
             camera.lookThrough();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            render();
+            chunk.render();
             Display.update();
             Display.sync(60);
         }
         Display.destroy();
     }
 
-    /**
-     *
-     */
-    private void render() {
-        try {
-           glBegin(GL_QUADS);
-            // Renders top of cube
-            glColor3f(0.0f, 0.0f, 1.0f);
-            glVertex3f( 1.0f, 1.0f,-1.0f);
-            glVertex3f(-1.0f, 1.0f,-1.0f);
-            glVertex3f(-1.0f, 1.0f, 1.0f);
-            glVertex3f( 1.0f, 1.0f, 1.0f); 
-
-
-            // Renders bottom of cube
-            glColor3f(0.0f, 1.0f, 0.0f);
-            glVertex3f(1.0f, -1.0f, 1.0f);
-            glVertex3f(-1.0f, -1.0f, 1.0f);
-            glVertex3f(-1.0f, -1.0f, -1.0f);
-            glVertex3f(1.0f, -1.0f, -1.0f);
-
-            // Front of cube
-            glColor3f(1.0f, 0.0f, 0.0f);
-            glVertex3f(1.0f, 1.0f, 1.0f);
-            glVertex3f(-1.0f, 1.0f, 1.0f);
-            glVertex3f(-1.0f, -1.0f, 1.0f);
-            glVertex3f(1.0f, -1.0f, 1.0f);
-
-            // Back of cube
-            glColor3f(1.0f, 1.0f, 0.0f);
-            glVertex3f(1.0f, -1.0f, -1.0f);
-            glVertex3f(-1.0f, -1.0f, -1.0f);
-            glVertex3f(-1.0f, 1.0f, -1.0f);
-            glVertex3f(1.0f, 1.0f, -1.0f);
-
-            // Left of cube
-            glColor3f(1.0f, 0.0f, 1.0f);
-            glVertex3f(-1.0f, 1.0f, 1.0f);
-            glVertex3f(-1.0f, 1.0f, -1.0f);
-            glVertex3f(-1.0f, -1.0f, -1.0f);
-            glVertex3f(-1.0f, -1.0f, 1.0f);
-
-            // Right of cube
-            glColor3f(0.0f, 1.0f, 1.0f);
-            glVertex3f(1.0f, 1.0f, -1.0f);
-            glVertex3f(1.0f, 1.0f, 1.0f);
-            glVertex3f(1.0f, -1.0f, 1.0f);
-            glVertex3f(1.0f, -1.0f, 1.0f);
-            glEnd();
-        } catch (Exception e) {
-            System.out.println("So an error occurred...");
-            e.printStackTrace();
-        }
-    }
-
-    private void createBlock(int i, int i0, int i1) {
-        Block[][][] b;
-        b = new Block[90][90][90];
-
-        int x, y, z;
-
-        x = i;
-        y = i0;
-        z = i1;
-
-        rebuildMesh(x, y, z);
-    }
-
-    private void rebuildMesh(int x, int y, int z) {
-        FloatBuffer VertexPositionData
-                = BufferUtils.createFloatBuffer((90 * 90 * 90) * 6 * 12);
-        VertexPositionData.put(createCube((float) (x * 2),
-                (float) (y * 2 + (int) (90 * -.256)), (float) (x * 2) - (90)));
-
-    }
-
-    private float createCube(float x, float y, float z) {
-        return 0;
-    }
 }
-

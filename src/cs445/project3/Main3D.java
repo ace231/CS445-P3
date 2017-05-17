@@ -9,7 +9,6 @@
  **************************************************/
 package cs445.project3;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import static org.lwjgl.opengl.GL11.*;
@@ -25,7 +24,7 @@ public class Main3D {
     private DisplayMode displayMode;
 
     /**
-     * 
+     *
      */
     public void start() {
         try {
@@ -39,12 +38,13 @@ public class Main3D {
     }
 
     /**
-     * 
-     * @throws Exception 
+     *
+     * @throws Exception
      */
     private void createWindow() throws Exception {
         Display.setFullscreen(false);
         DisplayMode d[] = Display.getAvailableDisplayModes();
+        
         for (int i = 0; i < d.length; i++) {
             if (d[i].getWidth() == 640 && d[i].getHeight() == 480 && d[i].getBitsPerPixel() == 32) {
                 displayMode = d[i];
@@ -55,9 +55,9 @@ public class Main3D {
         Display.setTitle("CS445 PLACEHOLDER TEXT LOL");
         Display.create();
     }
-    
+
     /**
-     * 
+     *
      */
     private void initGL() {
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -67,14 +67,11 @@ public class Main3D {
                 (float) displayMode.getWidth() / (float) displayMode.getHeight(), 0.1f, 300.0f);
         glMatrixMode(GL_MODELVIEW);
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-    }
-    
-    private void render() {
-        while (!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-            Display.update();
-            Display.sync(60);
-        }
-        Display.destroy();
+                glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_COLOR_ARRAY);
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_TEXTURE_2D);
+        glEnableClientState (GL_TEXTURE_COORD_ARRAY); 
     }
 
     /**
