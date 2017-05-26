@@ -1,13 +1,11 @@
-/**
- * ************************************************
+/**************************************************
  * file: Block.java
  * author: Armando Sanabria
  * class: CS 445 - Computer Graphics
  * assignment: Quarter project
- * date last modified: 5/8/2017
+ * date last modified: 05/17/2017
  * purpose: block class meant to hold data and blocks
- *************************************************
- */
+ **************************************************/
 package cs445.project3;
 
 /**

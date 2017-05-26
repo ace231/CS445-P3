@@ -1,10 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/**************************************************
+ * file: Chunk.java
+ * author: Alfredo Ceballos and Armando Sanabria
+ * class: CS 445 - Computer Graphics
+ * assignment: Quarter project
+ * date last modified: 05/17/2017
+ * purpose: main class for project. initializes window
+ *          and opengl
+ **************************************************/
 package cs445.project3;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.Random;
 import org.lwjgl.BufferUtils;
@@ -20,7 +26,7 @@ import org.newdawn.slick.util.ResourceLoader;
  */
 public class Chunk {
 
-    static final int CHUNK_SIZE = 90;
+    static final int CHUNK_SIZE = 30;
     static final int CUBE_LENGTH = 2;
     static final float PERSITANCE_MIN = 0.18f;
     static final float PERSITANCE_MAX = 0.40f;
@@ -33,24 +39,20 @@ public class Chunk {
     private final int StartY;
     private final int StartZ;
     private final Random r;
+    
     private Texture texture;
 
-    /**
-     *
-     * @param startX
-     * @param startY
-     * @param startZ
-     */
     public Chunk(int startX, int startY, int startZ) {
         try {
-            texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("C:/Users/asanabria/Downloads/CS445-Project3/CS445-Project3/src/cs445/project3/terrain.png"));
-        } catch (Exception e) {
+            texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("src/cs445/project3/terrain.png"));
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.print("no texture file");
         }
-
+        
         r = new Random(System.currentTimeMillis());
         Blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
+        
         for (int x = 0; x < CHUNK_SIZE; x++) {
             for (int i = 0; i < CHUNK_SIZE; i++) {
                 for (int j = 0; j < CHUNK_SIZE; j++) {
@@ -84,11 +86,9 @@ public class Chunk {
 
     }
 
-    /**
-     *
-     */
     public void render() {
         glPushMatrix();
+//        glPushMatrix();
         glBindBuffer(GL_ARRAY_BUFFER, VBOVertexHandle);
         glVertexPointer(3, GL_FLOAT, 0, 0L);
 
@@ -103,12 +103,6 @@ public class Chunk {
         glPopMatrix();
     }
 
-    /**
-     *
-     * @param startX
-     * @param startY
-     * @param startZ
-     */
     public void rebuildMesh(float startX, float startY, float startZ) {
         Random rand = new Random();
         int seed = (int) (50 * rand.nextFloat());
@@ -171,13 +165,6 @@ public class Chunk {
 
     }
 
-    /**
-     *
-     * @param x
-     * @param y
-     * @param block
-     * @return
-     */
     public static float[] createTexCube(float x, float y, Block block) {
         float offset = (1024f / 16) / 1024f;
 
