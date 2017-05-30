@@ -223,7 +223,8 @@ public class FPCameraController {
     }
 
     private void updateLight(float xOffset, float zOffset) {
-        lightPosition.put(lPosition.x -= xOffset).put(lPosition.z += zOffset).put(1.0f).flip();
+        lightPosition.put(lPosition.x -= xOffset).put(lPosition.y).put(lPosition.z += zOffset).
+                put(1.0f).flip();
         glLight(GL_LIGHT0,GL_POSITION, lightPosition);
     }
 

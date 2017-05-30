@@ -1,4 +1,4 @@
-/** ************************************************
+/**************************************************
  * file: Main3D.java
  * author: Alfredo Ceballos and Armando Sanabria
  * class: CS 445 - Computer Graphics
@@ -58,7 +58,7 @@ public class Main3D {
             }
         }
         Display.setDisplayMode(displayMode);
-        Display.setTitle("CS445 PLACEHOLDER TEXT LOL");
+        Display.setTitle("CS445 Final Project");
         Display.create();
     }
 
@@ -66,14 +66,6 @@ public class Main3D {
      *
      */
     private void initGL() {
-        initLightArrays();
-        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
-        glLight(GL_LIGHT0, GL_SPECULAR, whiteLight);
-        glLight(GL_LIGHT0, GL_DIFFUSE, whiteLight);
-        glLight(GL_LIGHT0, GL_AMBIENT, ambientLight);
-        glEnable(GL_LIGHTING);
-        glEnable(GL_LIGHT0);
-
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
@@ -86,14 +78,22 @@ public class Main3D {
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_TEXTURE_2D);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        
+        initLightArrays();
+        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
+        glLight(GL_LIGHT0, GL_SPECULAR, whiteLight);
+        glLight(GL_LIGHT0, GL_DIFFUSE, whiteLight);
+        glLight(GL_LIGHT0, GL_AMBIENT, ambientLight);
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
     }
 
     private void initLightArrays() {
         lightPosition = BufferUtils.createFloatBuffer(4);
-        lightPosition.put(0.0f).put(0.0f).put(0.5f).put(1.0f).flip();
+        lightPosition.put(0.0f).put(0.0f).put(0.0f).put(1.0f).flip();
 
         whiteLight = BufferUtils.createFloatBuffer(4);
-        whiteLight.put(9.0f).put(9.0f).put(9.0f).put(0.0f).flip();
+        whiteLight.put(1.0f).put(1.0f).put(1.0f).put(0.0f).flip();
 
         ambientLight = BufferUtils.createFloatBuffer(4);
         ambientLight.put(0.5f).put(0.5f).put(0.5f).put(0.0f).flip();

@@ -167,18 +167,6 @@ public class Chunk {
 
     public static float[] createTexCube(float x, float y, Block block) {
         float offset = (1024f / 16) / 1024f;
-        
-//        float offset = (1024f/16)/1024f;
-//        Textures texture = new Textures(offset);
-//        switch (block.getId()) {
-//            case 0 : return texture.grass();
-//            case 1 : return texture.sand();
-//            case 2 : return texture.water();
-//            case 3 : return texture.dirt();
-//            case 4 : return texture.stone();
-//            case 5 : return texture.bedrock();
-//            default: return texture.grass();
-//       }
 
         switch (block.getID()) {
             case 0: //grass
