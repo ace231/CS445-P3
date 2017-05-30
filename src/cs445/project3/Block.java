@@ -19,7 +19,7 @@ class Block {
     private float x;
     private float y;
     private float z;
-
+    
     /*
     Enumeration of block types
      */
@@ -30,6 +30,7 @@ class Block {
         BlockType_Dirt(3),
         BlockType_Stone(4),
         BlockType_Bedrock(5);
+        
         private int blockID;
 
         /**

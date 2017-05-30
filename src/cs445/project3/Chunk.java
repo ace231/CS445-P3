@@ -9,7 +9,6 @@
  **************************************************/
 package cs445.project3;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.Random;
@@ -44,7 +43,8 @@ public class Chunk {
 
     public Chunk(int startX, int startY, int startZ) {
         try {
-            texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("src/cs445/project3/terrain.png"));
+            texture = TextureLoader.getTexture("PNG", 
+                    ResourceLoader.getResourceAsStream("src/cs445/project3/terrain.png"));
         } catch (IOException e) {
             e.printStackTrace();
             System.out.print("no texture file");
@@ -167,6 +167,18 @@ public class Chunk {
 
     public static float[] createTexCube(float x, float y, Block block) {
         float offset = (1024f / 16) / 1024f;
+        
+//        float offset = (1024f/16)/1024f;
+//        Textures texture = new Textures(offset);
+//        switch (block.getId()) {
+//            case 0 : return texture.grass();
+//            case 1 : return texture.sand();
+//            case 2 : return texture.water();
+//            case 3 : return texture.dirt();
+//            case 4 : return texture.stone();
+//            case 5 : return texture.bedrock();
+//            default: return texture.grass();
+//       }
 
         switch (block.getID()) {
             case 0: //grass
