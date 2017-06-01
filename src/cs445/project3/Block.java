@@ -1,17 +1,15 @@
-/**************************************************
+/**
+ * ************************************************
  * file: Block.java
  * author: Armando Sanabria
  * class: CS 445 - Computer Graphics
  * assignment: Quarter project
  * date last modified: 05/17/2017
  * purpose: block class meant to hold data and blocks
- **************************************************/
+ *************************************************
+ */
 package cs445.project3;
 
-/**
- *
- * @author Armando Sanabria <asanabria@cpp.edu>
- */
 class Block {
 
     private boolean isActive;
@@ -19,7 +17,7 @@ class Block {
     private float x;
     private float y;
     private float z;
-    
+
     /*
     Enumeration of block types
      */
@@ -30,7 +28,9 @@ class Block {
         BlockType_Dirt(3),
         BlockType_Stone(4),
         BlockType_Bedrock(5);
-        
+//        BlockType_Wood(6);
+//        BlockType_Leaves(7);
+
         private int blockID;
 
         /**
@@ -77,7 +77,31 @@ class Block {
         this.y = y;
         this.z = z;
     }
+    
+    /**
+     * 
+     * @return 
+     */
+    public float getX() {
+        return x;
+    }
 
+    /**
+     * 
+     * @return 
+     */
+    public float getY() {
+        return y;
+    }
+
+    /**
+     * 
+     * @return 
+     */
+    public float getZ() {
+        return z;
+    }
+    
     /**
      *
      * @return
@@ -100,5 +124,9 @@ class Block {
      */
     public int getID() {
         return type.getID();
+    }
+    
+    public void setID(int i) {
+        type.setID(i);
     }
 }

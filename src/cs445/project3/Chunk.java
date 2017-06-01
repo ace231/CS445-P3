@@ -3,10 +3,10 @@
  * author: Alfredo Ceballos and Armando Sanabria
  * class: CS 445 - Computer Graphics
  * assignment: Quarter project
- * date last modified: 05/17/2017
+ * date last modified: 05/29/2017
  * purpose: main class for project. initializes window
  *          and opengl
- **************************************************/
+ *************************************************/
 package cs445.project3;
 
 import java.io.IOException;
@@ -19,14 +19,11 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
-/**
- *
- * @author Armando Sanabria <asanabria@cpp.edu>
- */
 public class Chunk {
 
     static final int CHUNK_SIZE = 30;
     static final int CUBE_LENGTH = 2;
+    
     static final float PERSITANCE_MIN = 0.18f;
     static final float PERSITANCE_MAX = 0.40f;
 
@@ -38,41 +35,36 @@ public class Chunk {
     private final int StartY;
     private final int StartZ;
     private final Random r;
-    
+
     private Texture texture;
 
+    /**
+     * 
+     * @param startX
+     * @param startY
+     * @param startZ 
+     */
     public Chunk(int startX, int startY, int startZ) {
         try {
-            texture = TextureLoader.getTexture("PNG", 
+            texture = TextureLoader.getTexture("PNG",
                     ResourceLoader.getResourceAsStream("src/cs445/project3/terrain.png"));
         } catch (IOException e) {
             e.printStackTrace();
             System.out.print("no texture file");
         }
-        
-        r = new Random(System.currentTimeMillis());
+
+        r = new Random();
         Blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
-        
+
         for (int x = 0; x < CHUNK_SIZE; x++) {
             for (int i = 0; i < CHUNK_SIZE; i++) {
                 for (int j = 0; j < CHUNK_SIZE; j++) {
-                    if (r.nextFloat() > 0.8f) {
-                        Blocks[x][i][j] = new Block(Block.BlockType.BlockType_Grass);
-                    } else if (r.nextFloat() > 0.6f) {
-                        Blocks[x][i][j] = new Block(Block.BlockType.BlockType_Dirt);
-                    } else if (r.nextFloat() > 0.4f) {
-                        Blocks[x][i][j] = new Block(Block.BlockType.BlockType_Water);
-                    } else if (r.nextFloat() > 0.3f) {
-                        Blocks[x][i][j] = new Block(Block.BlockType.BlockType_Sand);
-                    } else if (r.nextFloat() > 0.1f) {
-                        Blocks[x][i][j] = new Block(Block.BlockType.BlockType_Stone);
-                    } else {
-                        Blocks[x][i][j] = new Block(Block.BlockType.BlockType_Bedrock);
-                    }
-
+                    
+                    Blocks[x][i][j] = new Block(Block.BlockType.BlockType_Grass);
+                    Blocks[x][i][j].setCoords((float)x,  (float)i, (float)j);
+                    Blocks[x][i][j].setIsActive(false);
                 }
             }
-
         }
 
         VBOColorHandle = glGenBuffers();
@@ -86,6 +78,9 @@ public class Chunk {
 
     }
 
+    /**
+     * 
+     */
     public void render() {
         glPushMatrix();
 //        glPushMatrix();
@@ -103,6 +98,12 @@ public class Chunk {
         glPopMatrix();
     }
 
+    /**
+     * 
+     * @param startX
+     * @param startY
+     * @param startZ 
+     */
     public void rebuildMesh(float startX, float startY, float startZ) {
         Random rand = new Random();
         int seed = (int) (50 * rand.nextFloat());
@@ -125,12 +126,32 @@ public class Chunk {
         FloatBuffer VertexTextureData
                 = BufferUtils.createFloatBuffer((CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) * 6 * 12);
 
-        for (int x = 0; x < CHUNK_SIZE; x++) {
-            for (int z = 0; z < CHUNK_SIZE; z++) {
-                for (int y = 0; y < CHUNK_SIZE; y++) {
-                    int height = (int) (startY + Math.abs((int) (CHUNK_SIZE * noise.getNoise((int) x, (int) z))));
-                    if (y >= height) {
-                        break;
+        int a = 0;
+        
+        int posX = 0, posY = 0, posZ = 0;
+        posX = r.nextInt(CHUNK_SIZE - 8);
+        posZ = r.nextInt(CHUNK_SIZE - 8);
+        
+        for (float x = 0; x < CHUNK_SIZE; x++) {
+            for (float z = 0; z < CHUNK_SIZE; z++) {
+                double height = (startY + (int)(7*1 + noise.getNoise((int)x, (int)z))*CUBE_LENGTH);
+                for (float y = 0; y < height; y++) {
+                    if (y < 3) {
+                        Blocks[(int) x][(int) y][(int) z].setID(5);
+                    } else if (y < height - 3 ) {
+                        Blocks[(int) x][(int) y][(int) z].setID(4);
+                    } else if (y < height - 1 ) {
+                        Blocks[(int) x][(int) y][(int) z].setID(3);
+                    } else {
+                        if (x >= posX && x <= posX + 5 && (z == posZ || z == posZ + 5)) {
+                            Blocks[(int) x][(int) y][(int) z].setID(1);
+                        } else if (z >= posZ && z <= posX + 5 && (x == posX || x == posX + 5)) {
+                            Blocks[(int) x][(int) y][(int) z].setID(1);
+                        } else if (x >= posX + 1 && x <= posX + 4 && (z == posZ + 1 || z == posZ + 4)) {
+                            Blocks[(int) x][(int) y][(int) z].setID(2);
+                        } else {
+                            Blocks[(int) x][(int) y][(int) z].setID(0);
+                        }
                     }
 
                     VertexPositionData.put(createCube(
@@ -143,6 +164,8 @@ public class Chunk {
 
                     VertexTextureData.put(createTexCube((float) 0,
                             (float) 0, Blocks[(int) (x)][(int) (y)][(int) (z)]));
+                    
+                    Blocks[(int) x][(int) y][(int) z].setIsActive(true);
                 }
             }
         }
@@ -165,6 +188,13 @@ public class Chunk {
 
     }
 
+    /**
+     * 
+     * @param x
+     * @param y
+     * @param block
+     * @return 
+     */
     public static float[] createTexCube(float x, float y, Block block) {
         float offset = (1024f / 16) / 1024f;
 
